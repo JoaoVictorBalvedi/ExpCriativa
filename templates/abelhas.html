@@ -4,55 +4,128 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ABELHAS: USUÁRIOS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../static/css/abelha.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #FFC107;
+            --secondary-color: #FFA000;
+            --background-color: #FFF8E1;
+            --box-background: #ffffff;
+            --text-color: #333333;
+            --text-color-light: #ffffff;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        h1 {
+            grid-column: 1 / -1;
+            color: var(--primary-color);
+            text-align: center;
+        }
+        .box {
+            background-color: var(--box-background);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .box-title {
+            color: var(--primary-color);
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+        .dark-box {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+        }
+        .dark-box .box-title {
+            color: var(--text-color);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        .arrow {
+            font-size: 1.2em;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid rgba(0,0,0,0.2);
+            margin: 20px 0;
+        }
+        .botao_funcao button {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>ABELHAS: USUÁRIOS</h1>
-        <div class="left-column">
-            <div class="box">
-                <div class="box-title">Alertas Pendentes:</div>
-                <p>Nenhum alerta no momento.</p>
+        <div class="box">
+            <div class="box-title">Alertas Pendentes:</div>
+            <p>Nenhum alerta no momento.</p>
+        </div>
+        <div class="box">
+            <div class="box-title">
+                Histórico de Saúde
+                <span class="arrow">↗</span>
             </div>
-            <div class="box sub-section">
-                <div class="box-title">
-                    Histórico de Saúde
-                    <span class="arrow">↗</span>
-                    <div class="botao_funcao">
-                        <form action="/publish" method="POST">
-                            <button type="submit" name="action" value="toggle">On / Off</button>
-                        </form>
-                    </div>
-                </div>
+            <div class="botao_funcao">
+                <form action="/publish" method="POST">
+                    <button type="submit" name="action" value="toggle">On / Off</button>
+                </form>
             </div>
         </div>
-        <div class="right-column">
-            <div class="box dark-box">
-                <div class="box-title">Sensores</div>
-                <hr style="border: 1px solid #D0CFCF; margin: 20px 0;">
-                <table>
-                    {% for sensor_id, sensor in values.items() %}
-                        {% if "temperatura" in sensor_id %}
-                            <div>
-                                <span>{{ sensor.name }}</span>
-                                <span id="sensor_temperatura_agua"> {{ sensor.value }} °C</span>
-                            </div>
-                        {% elif "umidade" in sensor_id or "agua" in sensor_id %}
-                            <div>
-                                <span>{{ sensor.name }}</span>
-                                <span id="sensor_temperatura_agua"> {{ sensor.value }} %</span>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </table>
-                <div class="sub-section">
-                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                    <div class="box-title">Umidade do Ar</div>
-                    <hr style="border: 1px solid #D0CFCF; margin: 20px 0;">
-                    <p>45%</p>
-                </div>
-            </div>
+        <div class="box dark-box">
+            <div class="box-title">Sensores</div>
+            <hr>
+            <table>
+                {% for sensor_id, sensor in values.items() %}
+                    {% if "temperatura" in sensor_id %}
+                        <tr>
+                            <td>{{ sensor.name }}</td>
+                            <td id="sensor_temperatura_agua">{{ sensor.value }} °C</td>
+                        </tr>
+                    {% elif "umidade" in sensor_id or "agua" in sensor_id %}
+                        <tr>
+                            <td>{{ sensor.name }}</td>
+                            <td id="sensor_temperatura_agua">{{ sensor.value }} %</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </div>
+        <div class="box dark-box">
+            <div class="box-title">Umidade do Ar</div>
+            <hr>
+            <p>45%</p>
         </div>
     </div>
 </body>

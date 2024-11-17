@@ -5,94 +5,159 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VACAS: USUÁRIOS</title>
     <meta http-equiv="refresh" content="5">
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../static/css/vacas.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #795548;
+            --secondary-color: #5D4037;
+            --background-color: #EFEBE9;
+            --box-background: #ffffff;
+            --text-color: #333333;
+            --text-color-light: #ffffff;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        h1 {
+            grid-column: 1 / -1;
+            color: var(--primary-color);
+            text-align: center;
+        }
+        .box {
+            background-color: var(--box-background);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .box-title {
+            color: var(--primary-color);
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+        .dark-box {
+            background-color: var(--primary-color);
+            color: var(--text-color-light);
+        }
+        .dark-box .box-title {
+            color: var(--text-color-light);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        .arrow {
+            font-size: 1.2em;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            margin: 20px 0;
+        }
+        .botao_funcao button {
+            background-color: var(--secondary-color);
+            color: var(--text-color-light);
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>VACAS: USUÁRIOS</h1>
-        <div class="left-column">
-            <div class="box">
-                <div class="box-title">Alertas Pendentes:</div>
-                <p>Nenhum alerta no momento.</p>
+        <div class="box">
+            <div class="box-title">Alertas Pendentes:</div>
+            <p>Nenhum alerta no momento.</p>
+        </div>
+        <div class="box">
+            <div class="box-title">
+                Histórico de Saúde
+                <span class="arrow">↗</span>
             </div>
-            <div class="box sub-section">
-                <div class="box-title">
-                    Histórico de Saúde
-                    <span class="arrow">↗</span>
-                    <table>
-                        <tr>
-                            <th>Vaca</th>
-                            <th>Peso</th>
-                        </tr>
-                        {% for vaca in values.values() %}
-                            {% for peso in vaca.peso_historico %}
-                            <tr>
-                                <td>{{ vaca.name }}</td> 
-                                <td>{{ peso }}</td>
-                            </tr>
-                            {% endfor %}
-                        {% endfor %}
-                    </table>
-                    <div class="botao_funcao">
-                        <form action="/publish" method="POST">
-                            <button type="submit" name="action" value="vaca_open">Abrir Portão</button>
-                            <button type="submit" name="action" value="vaca_close">Fechar Portão</button>
-                        </form>
-                    </div>
-                </div>
+            <table>
+                <tr>
+                    <th>Vaca</th>
+                    <th>Peso</th>
+                </tr>
+                {% for vaca in values.values() %}
+                    {% for peso in vaca.peso_historico %}
+                    <tr>
+                        <td>{{ vaca.name }}</td> 
+                        <td>{{ peso }}</td>
+                    </tr>
+                    {% endfor %}
+                {% endfor %}
+            </table>
+            <div class="botao_funcao">
+                <form action="/publish" method="POST">
+                    <button type="submit" name="action" value="vaca_open">Abrir Portão</button>
+                    <button type="submit" name="action" value="vaca_close">Fechar Portão</button>
+                </form>
             </div>
         </div>
-        <div class="right-column">
-            <div class="box dark-box">
-                <div class="box-title">Parametros Vitais</div>
-                <hr style="border: 1px solid #D0CFCF; margin: 20px 0;">
-                <div>
-                    <table>
-                        <tr>
-                            <th>Vaca</th>
-                            <th>Peso</th>
-                        </tr>
-                        {% for key, vaca in values.items() %}
-                            <tr>
-                                <td>{{ vaca.name }}</td>
-                                <td>
-                                    {{ vaca.value }}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </div> 
-                <div class="sub-section">
-                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                    <div class="box-title">WebCam</div>
-                    <hr style="border: 1px solid #D0CFCF; margin: 20px 0;">
-                    <div>
-                        <table>
-                            <tr>
-                                <th>Atuador</th>
-                                <th>Valor</th>
-                            </tr>
-                            {% for key, atuador in atuadores.items() %}
-                                <tr>
-                                    <td>
-                                        {{ atuador.name }}
-                                    </td>
-                                    <td>
-                                        {% if (atuador.value == 'ABRINDO') %}
-                                            ABERTO
-                                        {% elif (atuador.value == 'FECHANDO') %}
-                                            FECHADO
-                                        {% else %}
-                                            {{ atuador.value }}
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </table>
-                    </div>
-                </div>
-            </div>
+        <div class="box dark-box">
+            <div class="box-title">Parametros Vitais</div>
+            <hr>
+            <table>
+                <tr>
+                    <th>Vaca</th>
+                    <th>Peso</th>
+                </tr>
+                {% for key, vaca in values.items() %}
+                    <tr>
+                        <td>{{ vaca.name }}</td>
+                        <td>{{ vaca.value }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="box dark-box">
+            <div class="box-title">WebCam</div>
+            <hr>
+            <table>
+                <tr>
+                    <th>Atuador</th>
+                    <th>Valor</th>
+                </tr>
+                {% for key, atuador in atuadores.items() %}
+                    <tr>
+                        <td>{{ atuador.name }}</td>
+                        <td>
+                            {% if (atuador.value == 'ABRINDO') %}
+                                ABERTO
+                            {% elif (atuador.value == 'FECHANDO') %}
+                                FECHADO
+                            {% else %}
+                                {{ atuador.value }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
         </div>
     </div>
 </body>
