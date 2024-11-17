@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="../static/css/login.css">
+</head>
+<body>
+    <div class="container">
+        <form action="{{ url_for('usuario.validated_user') }}" class="left-half" method="post">
+            <h1>Login</h1>
+            <input type="text" name="user" placeholder="Username">
+            <input type="password" name="password" placeholder="Password">
+            <input type="submit" class="button" placeholder="Enviar">
+        </form>
+        <div class="right-half">
+            <div class="user-icon">
+                <img src="../static/img/user.png" alt="user-icon" class="user-icon">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

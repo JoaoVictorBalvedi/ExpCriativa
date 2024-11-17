@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Management Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/admpage.css">
+</head>
+<body>
+    <div class="header">
+        <h1>O que gostaria de gerenciar hoje?</h1>
+        <style>
+            .header h1 {
+                margin-right: 40px; 
+                font-family: 'Josefin Sans', sans-serif;
+            }
+        </style>
+        <a href="/gestaouseradm" class="button">Gerenciar Usuários</a>
+    </div>
+    <div class="container">
+        <a href="/abelhasadm" class="card">
+            <div class="card-title">Abelhas</div>
+            <div class="card-subtitle">Irrigação e<br>Abastecimento</div>
+            <img src="../static/img/bee.png" alt="Abelhas">
+            <hr>
+        </a>
+        <a href="/vacasadm" class="card">
+            <div class="card-title">Vacas</div>
+            <div class="card-subtitle">Monitoramento de<br>Saúde e Atividade</div>
+            <img src="../static/img/cow.png" alt="Vacas">
+            <hr>
+        </a>
+        <a href="/peixesadm" class="card card-dark">
+            <div class="card-title">Peixes</div>
+            <div class="card-subtitle">Monitoramento da<br>qualidade de vida</div>
+            <img src="../static/img/fish.png" alt="Peixes">
+            <hr>
+        </a>
+        <a href="/pancsadm" class="card card-dark" style="background-color: #737870;">
+            <div class="card-title">PANCS</div>
+            <div class="card-subtitle">Monitoramento e<br>Ajuste de Condição</div>
+            <img src="../static/img/pancs.png" alt="PANCS">
+            <hr>
+        </a>
+    </div>
+</body>
+</html>

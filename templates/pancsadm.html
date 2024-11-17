@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PANCS: ADMINISTRADOR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/pancsadm.css">
+</head>
+<body>
+    <div class="container">
+        <h1>PANCS: ADMINISTRADOR</h1>
+        <div class="left-column">
+            <div class="split-box">
+                <div class="box">
+                    <div class="box-title">Alertas Pendentes:</div>
+                    <p>Nenhum alerta no momento.</p>
+                </div>
+                <div class="box">
+                    <div class="box-title">Cadastro Sensores/Atuadores</div>
+                    <form action="/add_sensor_atuador_pancs" method="POST">
+                        <p><label for="item_type">Tipo:</label></p>
+                        <p><select id="item_type" name="item_type" required>
+                                <option value="sensor">Sensor</option>
+                                <option value="atuador">Atuador</option>
+                            </select></p>
+                        <p><label for="item_name">Nome do Item:</label></p>
+                        <p><input type="text" id="item_name" name="item_name" required></p>
+                        <p><label for="item_value">Valor Inicial:</label></p>
+                        <p><input type="number" step="any" id="item_value" name="item_value" required></p>
+                        <p><input type="submit" value="Cadastrar"></p>
+                    </form>
+                </div>
+            </div>
+            <div class="box sub-section">
+                <div class="box-title">
+                    Edicao de Sensores/Atuadores
+                    <span class="arrow">↗</span>
+                    <form >
+                        <select name="values" class="Input" onchange="updateForm(this)">
+                            <option value="|">Selecione um sensor ou atuador</option>
+                            {% for key, value in values.items() %}
+                                <option value="{{ key }}|{{ value.value }}">{{ value.name }}</option>
+                            {% endfor %}
+                            {% for key, atuador in atuadores.items() %}
+                                <option value="{{ key }}|{{ atuador.value }}">{{ atuador.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                    <form action="http://192.168.15.117:80/att_sensor" id="selecionado" class="atualizar" method="post">
+                        <p>Sensor/Atuador Atual:</p>
+                        <p><input type="text" name="current_sensor" placeholder="Sensor/Atuador Atual" readonly required /></p>
+                        <p>Novo Sensor/Atuador:</p>
+                        <p><input type="text" name="new_sensor" placeholder="Novo Sensor/Atuador" required /></p>
+                        <p>Nova Configuração:</p>
+                        <p><input type="text" name="configuration" placeholder="Nova Configuração" required /></p>
+                        <p><input type="submit" value="Atualizar" /></p>
+                    </form>
+                </div>
+            </div>
+            <script>
+                function updateForm(selectElement) {
+                    const selectedValue = selectElement.value;
+                    if (selectedValue !== "|") {
+                        const [sensorOrActuator, currentValue] = selectedValue.split('|');
+                        const form = document.getElementById('selecionado');
+                        form.querySelector('input[name="current_sensor"]').value = sensorOrActuator;
+                        form.querySelector('input[name="configuration"]').value = currentValue;
+                    } else {
+                        const form = document.getElementById('selecionado');
+                        form.querySelector('input[name="current_sensor"]').value = '';
+                        form.querySelector('input[name="configuration"]').value = '';
+                    }
+                }
+            </script>
+        </div>
+        <div class="right-column">
+            <div class="box dark-box">
+                <div class="box-title">Sensores</div>
+                <hr style="border: 1px solid #D0CFCF; margin: 20px 0;">
+                <div>
+                    <table>
+                        <tr>
+                            <th>Sensor</th>
+                            <th>Valor</th>
+                            <th>Ação</th>
+                        </tr>
+                        {% for key, sensor in values.items() %}
+                            <tr>
+                                <td>{{ sensor.name }}</td>
+                                <td>
+                                    {% if sensor.name == 'temperatura' %}
+                                        {{ sensor.value }} ºC
+                                    {% elif sensor.name == 'umidade' %}
+                                        {{ sensor.value }} %
+                                    {% else %}
+                                        {{ sensor.value }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <form action="/del_sensor_pancs" method="POST">
+                                        <input type="hidden" name="sensor_name" value="{{ sensor.name }}">
+                                        <input type="submit" value="Deletar" />
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div> 
+                <div class="sub-section">
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                    <div class="box-title">Sistema</div>
+                    <hr style="border: 1px solid #D0CFCF; margin: 20px 0;">
+                    <div>
+                        <table>
+                            <tr>
+                                <th>Atuador</th>
+                                <th>Valor</th>
+                                <th>Ação</th>
+                            </tr>
+                            {% for key, atuador in atuadores.items() %}
+                                <tr>
+                                    <td>{{ atuador.name }}</td>
+                                    <td>
+                                        {% if atuador.name == 'temperatura' %}
+                                            {{ atuador.value }} ºC
+                                        {% elif atuador.name == 'umidade' %}
+                                            {{ atuador.value }} %
+                                        {% else %}
+                                            {{ atuador.value }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <form action="/del_atuador_pancs" method="POST">
+                                            <input type="hidden" name="atuador_name" value="{{ atuador.name }}">
+                                            <input type="submit" value="Deletar" />
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

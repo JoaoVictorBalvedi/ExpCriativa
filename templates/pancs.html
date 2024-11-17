@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PANCS: USUÁRIOS</title>
+    <meta http-equiv="refresh" content="5">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/pancs.css">
+</head>
+<body>
+    <div class="container">
+        <h1>PANCS: USUÁRIOS</h1>
+        <div class="left-column">
+            <div class="box">
+                <div class="box-title">Alertas Pendentes:</div>
+                <p>Nenhum alerta no momento.</p>
+            </div>
+            <div class="box sub-section">
+                <div class="box-title">
+                    Histórico de Saúde
+                    <span class="arrow">↗</span>
+                </div>
+            </div>
+        </div>
+        <div class="right-column">
+            <div class="box dark-box">
+                <div class="box-title">Sensores</div>
+                <hr style="border: 1px solid #D0CFCF; margin: 20px 0;">
+                <div>
+                    <table>
+                        <tr>
+                            <th>Sensor</th>
+                            <th>Valor</th>
+                        </tr>
+                        {% for key, sensor in values.items() %}
+                            <tr>
+                                <td>{{ sensor.name }}</td>
+                                <td>
+                                    {% if sensor.name == 'temperatura' %}
+                                        {{ sensor.value }} ºC
+                                    {% elif sensor.name == 'umidade' %}
+                                        {{ sensor.value }} %
+                                    {% else %}
+                                        {{ sensor.value }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div> 
+                <div class="sub-section">
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                    <div class="box-title">Sistema</div>
+                    <hr style="border: 1px solid #D0CFCF; margin: 20px 0;">
+                    <div>
+                        <table>
+                            <tr>
+                                <th>Atuador</th>
+                                <th>Valor</th>
+                            </tr>
+                            {% for key, atuador in atuadores.items() %}
+                                <tr>
+                                    <td>{{ atuador.name }}</td>
+                                    <td>
+                                        {% if atuador.name == 'temperatura' %}
+                                            {{ atuador.value }} ºC
+                                        {% elif atuador.name == 'umidade' %}
+                                            {{ atuador.value }} %
+                                        {% else %}
+                                            {{ atuador.value }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

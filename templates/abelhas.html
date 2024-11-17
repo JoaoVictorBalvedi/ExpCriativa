@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABELHAS: USUÁRIOS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/abelha.css">
+</head>
+<body>
+    <div class="container">
+        <h1>ABELHAS: USUÁRIOS</h1>
+        <div class="left-column">
+            <div class="box">
+                <div class="box-title">Alertas Pendentes:</div>
+                <p>Nenhum alerta no momento.</p>
+            </div>
+            <div class="box sub-section">
+                <div class="box-title">
+                    Histórico de Saúde
+                    <span class="arrow">↗</span>
+                    <div class="botao_funcao">
+                        <form action="/publish" method="POST">
+                            <button type="submit" name="action" value="toggle">On / Off</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-column">
+            <div class="box dark-box">
+                <div class="box-title">Sensores</div>
+                <hr style="border: 1px solid #D0CFCF; margin: 20px 0;">
+                <table>
+                    {% for sensor_id, sensor in values.items() %}
+                        {% if "temperatura" in sensor_id %}
+                            <div>
+                                <span>{{ sensor.name }}</span>
+                                <span id="sensor_temperatura_agua"> {{ sensor.value }} °C</span>
+                            </div>
+                        {% elif "umidade" in sensor_id or "agua" in sensor_id %}
+                            <div>
+                                <span>{{ sensor.name }}</span>
+                                <span id="sensor_temperatura_agua"> {{ sensor.value }} %</span>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+                <div class="sub-section">
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                    <div class="box-title">Umidade do Ar</div>
+                    <hr style="border: 1px solid #D0CFCF; margin: 20px 0;">
+                    <p>45%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABELHAS: ADMINISTRADOR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/abelhasadm.css">
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script>
+        var socket = io(); // Inicializando o socket
+
+        socket.on('update_data', function(data) {
+            if (data.sensor === 'sensor_umidade') {
+                const valueElement = document.getElementById('sensor_umidade');
+                if (valueElement) {
+                    valueElement.innerText = data.value + '%';
+                }
+            }
+            if (data.sensor === 'sensor_temperatura_agua') {
+                const valueElement = document.getElementById('sensor_temperatura_agua');
+                if (valueElement) {
+                    valueElement.innerText = data.value + '°C';
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>ABELHAS: ADMINISTRADOR</h1>
+        <div class="left-column">
+            <div class="split-box">
+                <div class="box">
+                    <div class="box-title">Alertas Pendentes:</div>
+                    <p>Nenhum alerta no momento.</p>
+                </div>
+                <div class="box">
+                    <div class="box-title">Cadastro Sensores/Atuadores</div>
+                    <form action="/add_sensor_atuador_abelhas" method="POST">
+                        <p><label for="item_type">Tipo:</label></p>
+                        <p><select id="item_type" name="item_type" required>
+                                <option value="sensor">Sensor</option>
+                                <option value="atuador">Atuador</option>
+                            </select></p>
+                        <p><label for="item_name">Nome do Item:</label></p>
+                        <p><input type="text" id="item_name" name="item_name" required></p>
+                        <p><label for="item_value">Valor Inicial:</label></p>
+                        <p><input type="number" step="any" id="item_value" name="item_value" required></p>
+                        <p><input type="submit" value="Cadastrar"></p>
+                    </form>
+                </div>
+            </div>
+            <div class="box sub-section">
+                <div class="box-title">
+                    Planejamento de Irrigação
+                    <span class="arrow">↗</span>
+                </div>
+                <div class="botao_funcao">
+                    <form action="/publish" method="POST">
+                        <button type="submit" name="action" value="abelha">On / Off</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="right-column">
+            <div class="box dark-box">
+                <div class="box-title">Sensores e Dados</div>
+                <hr style="border: 1px solid #D0CFCF; margin: 20px 0;">
+                <table>
+                    <tr>
+                        <th>Sensor</th>
+                        <th>Valor</th>
+                        <th>Ação</th>
+                    </tr>
+                    {% for sensor_id, sensor in values.items() %}
+                        <tr>
+                            <td>{{ sensor.name }}</td>
+                            <td>
+                                {% if "temperatura" in sensor_id %}
+                                    {{ sensor.value }} °C
+                                {% elif "umidade" in sensor_id or "agua" in sensor_id %}
+                                    {{ sensor.value }} %
+                                {% else %}
+                                    {{ sensor.value }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <form action="/del_sensor_abelhas" method="POST">
+                                    <input type="hidden" name="sensor_name" value="{{ sensor.name }}">
+                                    <input type="submit" value="Deletar" />
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                
+                <div class="sub-section">
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                    <div class="box-title">Umidade do Ar</div>
+                    <hr style="border: 1px solid #D0CFCF; margin: 20px 0;">
+                    <table>
+                        <tr>
+                            <th>Atuador</th>
+                            <th>Valor</th>
+                        </tr>
+                        {% for key, atuador in atuadores.items() %}
+                            <tr>
+                                <td>
+                                    {{ atuador.name }}
+                                </td>
+                                <td>
+                                    {% if (atuador.value == 'LIGADO') %}
+                                        LIGADO
+                                    {% elif (atuador.value == 'DESLIGADA') %}
+                                        DESLIGADO
+                                    {% else %}
+                                        {{ atuador.value }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

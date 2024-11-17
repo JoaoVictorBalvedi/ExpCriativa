@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VACAS: USUÁRIOS</title>
+    <meta http-equiv="refresh" content="5">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/vacas.css">
+</head>
+<body>
+    <div class="container">
+        <h1>VACAS: USUÁRIOS</h1>
+        <div class="left-column">
+            <div class="box">
+                <div class="box-title">Alertas Pendentes:</div>
+                <p>Nenhum alerta no momento.</p>
+            </div>
+            <div class="box sub-section">
+                <div class="box-title">
+                    Histórico de Saúde
+                    <span class="arrow">↗</span>
+                    <table>
+                        <tr>
+                            <th>Vaca</th>
+                            <th>Peso</th>
+                        </tr>
+                        {% for vaca in values.values() %}
+                            {% for peso in vaca.peso_historico %}
+                            <tr>
+                                <td>{{ vaca.name }}</td> 
+                                <td>{{ peso }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    </table>
+                    <div class="botao_funcao">
+                        <form action="/publish" method="POST">
+                            <button type="submit" name="action" value="vaca_open">Abrir Portão</button>
+                            <button type="submit" name="action" value="vaca_close">Fechar Portão</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-column">
+            <div class="box dark-box">
+                <div class="box-title">Parametros Vitais</div>
+                <hr style="border: 1px solid #D0CFCF; margin: 20px 0;">
+                <div>
+                    <table>
+                        <tr>
+                            <th>Vaca</th>
+                            <th>Peso</th>
+                        </tr>
+                        {% for key, vaca in values.items() %}
+                            <tr>
+                                <td>{{ vaca.name }}</td>
+                                <td>
+                                    {{ vaca.value }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div> 
+                <div class="sub-section">
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                    <div class="box-title">WebCam</div>
+                    <hr style="border: 1px solid #D0CFCF; margin: 20px 0;">
+                    <div>
+                        <table>
+                            <tr>
+                                <th>Atuador</th>
+                                <th>Valor</th>
+                            </tr>
+                            {% for key, atuador in atuadores.items() %}
+                                <tr>
+                                    <td>
+                                        {{ atuador.name }}
+                                    </td>
+                                    <td>
+                                        {% if (atuador.value == 'ABRINDO') %}
+                                            ABERTO
+                                        {% elif (atuador.value == 'FECHANDO') %}
+                                            FECHADO
+                                        {% else %}
+                                            {{ atuador.value }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

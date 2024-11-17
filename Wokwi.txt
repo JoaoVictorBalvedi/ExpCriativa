@@ -1,0 +1,12 @@
+PANCS = https://wokwi.com/projects/411743256318287873
+VACAS = https://wokwi.com/projects/411776659784446977
+ABELHAS = https://wokwi.com/projects/411771323779695617
+PEIXES = 
+
+
+TOPICOS MQTT:
+PANCS = pancs/temperatura ---- pancs/umidade ---- pancs/atuador
+VACAS = esp32/peso ---- esp32/servo ---- esp32/portao
+ABELHAS = esp32/temperatura_agua ---- esp32/umidade_ar ---- esp32/temperatura_ar ---- esp32/nivel_agua ---- esp32/bomba_agua ---- esp32/mensagem
+PEIXES = 
+

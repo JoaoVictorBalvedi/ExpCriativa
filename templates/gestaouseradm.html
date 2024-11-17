@@ -1,0 +1,82 @@
+{% block content%}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GESTAO DE USUÁRIOS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/gestaouseradm.css">
+</head>
+<body>
+    <div class="container">
+        <h1>GESTAO DE USUÁRIOS</h1>
+        <div class="left-column">
+            <div class="box">
+                <div class="box-title">Cadastro de Usuários</div>
+                <form action="http://192.168.15.117:80/add_user" class="cadastro" method="post">
+                    <p>Usuário:</p>
+                    <p><input type="text" name="user" placeholder="User" required/></p>
+                    <p>Senha:</p>
+                    <p><input type="text" name="password" placeholder="Password" required/></p>
+                    <p><input type="submit" value="Cadastrar" /></p>
+                </form>
+            </div>
+            <div class="box sub-section">
+                <div class="box-title">
+                    Edição e Remoção de Usuários
+                    <span class="arrow">↗</span>
+                    <form action="http://192.168.15.117:80/del_user" method="post">
+                        <select name="user" class="Input" onchange="updateForm(this)">
+                            <option value="|">Selecione um usuário</option>
+                            {% for key, value in users.items()%}
+                            <option value="{{ key }}|{{ value }}">{{ key }}</option>
+                            {% endfor %}
+                            {% for key, value in users_adm.items()%}
+                            <option value="{{ key }}|{{ value }}">{{ key }}</option>
+                            {% endfor %}
+                        </select>
+                        <p><input type="submit" value="Deletar" /></p>
+                    </form>
+                    <form action="http://192.168.15.117:80/att_user" id="selecionado" class="atualizar" method="post">
+                        <p>Usuário Atual:</p>
+                        <p><input type="text" name="current_user" placeholder="Usuário Atual" readonly required/></p>
+                        <p>Novo Usuário:</p>
+                        <p><input type="text" name="new_user" placeholder="Novo Usuário" required/></p>
+                        <p>Nova Senha:</p>
+                        <p><input type="text" name="password" placeholder="Nova Senha" required/></p>
+                        <p><input type="submit" value="Atualizar" /></p>
+                    </form>
+                </div>
+            </div>
+            <script>
+            function updateForm(selectElement) {
+                const selectedValue = selectElement.value;
+                const [user, password] = selectedValue.split('|');
+                
+                const form = document.getElementById('selecionado');
+                form.querySelector('input[name="current_user"]').value = user;
+                form.querySelector('input[name="password"]').value = password;
+            }
+            </script>
+        </div>
+        <div class="right-column">
+            <div class="box dark-box">
+                <div class="box-title">Lista de Usuários</div>
+                <hr style="border: 1px solid #D0CFCF; margin: 20px 0;">
+                <ul>
+                    {% for users_adm in users_adm %}
+                    <li>{{ users_adm }}</li>
+                    {% endfor %}
+                    {% for user in users %}
+                    <li>{{ user }}</li>
+                    {% endfor %}
+                </ul>
+        
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock%}
