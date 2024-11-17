@@ -3,20 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <link rel="stylesheet" href="../static/css/login.css">
+    <title>Login - Connect Farm</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #45a049;
+            --background-color: #f0f4f0;
+            --text-color: #333;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 800px;
+            max-width: 100%;
+        }
+        .left-half {
+            flex: 1;
+            padding: 40px;
+        }
+        .right-half {
+            flex: 1;
+            background-color: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 30px;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: var(--secondary-color);
+        }
+        .user-icon {
+            background-color: white;
+            border-radius: 50%;
+            padding: 20px;
+        }
+        .user-icon img {
+            width: 100px;
+            height: 100px;
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .right-half {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <form action="{{ url_for('usuario.validated_user') }}" class="left-half" method="post">
             <h1>Login</h1>
-            <input type="text" name="user" placeholder="Username">
-            <input type="password" name="password" placeholder="Password">
-            <input type="submit" class="button" placeholder="Enviar">
+            <input type="text" name="user" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="submit" class="button" value="Entrar">
         </form>
         <div class="right-half">
             <div class="user-icon">
-                <img src="../static/img/user.png" alt="user-icon" class="user-icon">
+                <img src="../static/img/user.png" alt="user-icon">
             </div>
         </div>
     </div>

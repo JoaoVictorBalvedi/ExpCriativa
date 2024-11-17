@@ -1,82 +1,148 @@
-{% block content%}
+{% block content %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GESTAO DE USUÁRIOS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../static/css/gestaouseradm.css">
+    <title>GESTÃO DE USUÁRIOS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #45a049;
+            --background-color: #f0f4f0;
+            --text-color: #333;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-color);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        h1 {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: var(--primary-color);
+        }
+        .box {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .box-title {
+            font-size: 1.2em;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        input[type="text"], input[type="password"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: var(--secondary-color);
+        }
+        .dark-box {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .dark-box .box-title {
+            color: white;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 5px 0;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            margin: 20px 0;
+        }
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>GESTAO DE USUÁRIOS</h1>
-        <div class="left-column">
-            <div class="box">
-                <div class="box-title">Cadastro de Usuários</div>
-                <form action="http://192.168.15.117:80/add_user" class="cadastro" method="post">
-                    <p>Usuário:</p>
-                    <p><input type="text" name="user" placeholder="User" required/></p>
-                    <p>Senha:</p>
-                    <p><input type="text" name="password" placeholder="Password" required/></p>
-                    <p><input type="submit" value="Cadastrar" /></p>
-                </form>
-            </div>
-            <div class="box sub-section">
-                <div class="box-title">
-                    Edição e Remoção de Usuários
-                    <span class="arrow">↗</span>
-                    <form action="http://192.168.15.117:80/del_user" method="post">
-                        <select name="user" class="Input" onchange="updateForm(this)">
-                            <option value="|">Selecione um usuário</option>
-                            {% for key, value in users.items()%}
-                            <option value="{{ key }}|{{ value }}">{{ key }}</option>
-                            {% endfor %}
-                            {% for key, value in users_adm.items()%}
-                            <option value="{{ key }}|{{ value }}">{{ key }}</option>
-                            {% endfor %}
-                        </select>
-                        <p><input type="submit" value="Deletar" /></p>
-                    </form>
-                    <form action="http://192.168.15.117:80/att_user" id="selecionado" class="atualizar" method="post">
-                        <p>Usuário Atual:</p>
-                        <p><input type="text" name="current_user" placeholder="Usuário Atual" readonly required/></p>
-                        <p>Novo Usuário:</p>
-                        <p><input type="text" name="new_user" placeholder="Novo Usuário" required/></p>
-                        <p>Nova Senha:</p>
-                        <p><input type="text" name="password" placeholder="Nova Senha" required/></p>
-                        <p><input type="submit" value="Atualizar" /></p>
-                    </form>
-                </div>
-            </div>
-            <script>
-            function updateForm(selectElement) {
-                const selectedValue = selectElement.value;
-                const [user, password] = selectedValue.split('|');
-                
-                const form = document.getElementById('selecionado');
-                form.querySelector('input[name="current_user"]').value = user;
-                form.querySelector('input[name="password"]').value = password;
-            }
-            </script>
+        <h1>GESTÃO DE USUÁRIOS</h1>
+        <div class="box">
+            <div class="box-title">Cadastro de Usuários</div>
+            <form action="http://192.168.15.117:80/add_user" class="cadastro" method="post">
+                <input type="text" name="user" placeholder="Usuário" required>
+                <input type="password" name="password" placeholder="Senha" required>
+                <input type="submit" value="Cadastrar">
+            </form>
         </div>
-        <div class="right-column">
-            <div class="box dark-box">
-                <div class="box-title">Lista de Usuários</div>
-                <hr style="border: 1px solid #D0CFCF; margin: 20px 0;">
-                <ul>
-                    {% for users_adm in users_adm %}
-                    <li>{{ users_adm }}</li>
+        <div class="box">
+            <div class="box-title">Edição e Remoção de Usuários</div>
+            <form action="http://192.168.15.117:80/del_user" method="post">
+                <select name="user" class="Input" onchange="updateForm(this)">
+                    <option value="|">Selecione um usuário</option>
+                    {% for key, value in users.items() %}
+                    <option value="{{ key }}|{{ value }}">{{ key }}</option>
                     {% endfor %}
-                    {% for user in users %}
-                    <li>{{ user }}</li>
+                    {% for key, value in users_adm.items() %}
+                    <option value="{{ key }}|{{ value }}">{{ key }}</option>
                     {% endfor %}
-                </ul>
-        
-                </div>
-            </div>
+                </select>
+                <input type="submit" value="Deletar">
+            </form>
+            <form action="http://192.168.15.117:80/att_user" id="selecionado" class="atualizar" method="post">
+                <input type="text" name="current_user" placeholder="Usuário Atual" readonly required>
+                <input type="text" name="new_user" placeholder="Novo Usuário" required>
+                <input type="password" name="password" placeholder="Nova Senha" required>
+                <input type="submit" value="Atualizar">
+            </form>
+        </div>
+        <div class="box dark-box">
+            <div class="box-title">Lista de Usuários</div>
+            <hr>
+            <ul>
+                {% for users_adm in users_adm %}
+                <li>{{ users_adm }}</li>
+                {% endfor %}
+                {% for user in users %}
+                <li>{{ user }}</li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
+    <script>
+    function updateForm(selectElement) {
+        const selectedValue = selectElement.value;
+        const [user, password] = selectedValue.split('|');
+        
+        const form = document.getElementById('selecionado');
+        form.querySelector('input[name="current_user"]').value = user;
+        form.querySelector('input[name="password"]').value = password;
+    }
+    </script>
 </body>
 </html>
-{% endblock%}
+{% endblock %}
